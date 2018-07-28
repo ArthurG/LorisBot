@@ -13,8 +13,7 @@ def get_course_details(time_period, subject_name, course_number):
     chrome_opts = webdriver.ChromeOptions()
     chrome_opts.add_argument("--headless")
 
-    driver = webdriver.Chrome(
-        executable_path=r"/home/arthur/Programming/LorisBot/chromedriver.linux", chrome_options=chrome_opts)
+    driver = webdriver.Firefox(executable_path=r'/home/arthur/Programming/LorisBot/geckodriver')
     driver.maximize_window()
     driver.get(first_url)
 

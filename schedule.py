@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 
+from selenium.webdriver import FirefoxOptions
+
 import requests
 
 def get_course_details(time_period, subject_name, course_number):
@@ -13,7 +15,11 @@ def get_course_details(time_period, subject_name, course_number):
     chrome_opts = webdriver.ChromeOptions()
     chrome_opts.add_argument("--headless")
 
-    driver = webdriver.Firefox(executable_path=r'/home/arthur/Programming/LorisBot/geckodriver')
+    opts = FirefoxOptions()
+    opts.add_argument("--headless")
+
+
+    driver = webdriver.Firefox(executable_path=r'/home/arthur/Programming/LorisBot/geckodriver', firefox_options=opts)
     driver.maximize_window()
     driver.get(first_url)
 
@@ -44,6 +50,7 @@ def get_course_details(time_period, subject_name, course_number):
             title = table.find("a").text
             course["title"] = title
 
+            print(title)
             seats_table = table.find_next(
                 "table", {"summary": "This layout table is used to present the seating numbers."})
 

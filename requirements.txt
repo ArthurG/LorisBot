@@ -1,3 +1,3 @@
 selenium
-discord
-asyncio
+requests
+bs4

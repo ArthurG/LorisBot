@@ -6,8 +6,11 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 
 from selenium.webdriver import FirefoxOptions
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 import requests
+
+from pyvirtualdisplay import Display
 
 def get_course_details(time_period, subject_name, course_number):
     first_url = "https://loris.wlu.ca/ssb_prod/bwckschd.p_disp_dyn_sched"
@@ -18,9 +21,10 @@ def get_course_details(time_period, subject_name, course_number):
     opts = FirefoxOptions()
     opts.add_argument("--headless")
 
+    binary = FirefoxBinary('/usr/bin/firefox')
 
-    driver = webdriver.Firefox(executable_path=r'/home/arthur/Programming/LorisBot/geckodriver', firefox_options=opts)
-    driver.maximize_window()
+
+    driver = webdriver.Firefox(firefox_binary=binary, firefox_options=opts, executable_path='/usr/bin/geckodriver')
     driver.get(first_url)
 
     # Select Fall 2018 and Submit form.
@@ -72,6 +76,10 @@ def notify_if_needed(course_data, good_sections):
                 .format(sec, course_data[sec]["remaining"], course_data[sec]["actual"])})
 
 def main():
+
+    display = Display(visible=0, size=(800, 600))
+    display.start()
+
     #course_data = get_course_details("Fall 2018", "Business", "481")
     #good_sections = ["Business Policy I - 56 - BU 481 - C", "Business Policy I - 1021 - BU 481 - G", "Business Policy I - 1660 - BU 481 - K"]
     #notify_if_needed(course_data, good_sections)
@@ -83,6 +91,8 @@ def main():
     course_data = get_course_details("Spring 2019", "Business", "493U")
     good_sections = ["Fin Markets & Security Trading - 480 - BU 493U - H"]
     notify_if_needed(course_data, good_sections)
+
+    display.stop()
 
 if __name__ == "__main__":
     main()

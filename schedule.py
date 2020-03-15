@@ -12,6 +12,8 @@ import requests
 
 from pyvirtualdisplay import Display
 
+WEBHOOK = ""
+
 def get_course_details(time_period, subject_name, course_number):
     first_url = "https://loris.wlu.ca/ssb_prod/bwckschd.p_disp_dyn_sched"
 
@@ -69,10 +71,9 @@ def get_course_details(time_period, subject_name, course_number):
     return course_data
 
 def notify_if_needed(course_data, good_sections):
-    webhook = "https://discordapp.com/api/webhooks/470460445405478913/ffgek4x8A5UQxQJnCKHI6m7AqXnQ8up6GflPfXUJBlnldxZYfxne0BozblQwm_dVXmT-"
     for sec in good_sections:
         if int(course_data[sec]["remaining"]) > 0:
-            requests.post(webhook, {"content": "Found open course: {}, Remaining spots: {}, Filled spots: {}"
+            requests.post(WEBHOOK, {"content": "Found open course: {}, Remaining spots: {}, Filled spots: {}"
                 .format(sec, course_data[sec]["remaining"], course_data[sec]["actual"])})
 
 def main():
